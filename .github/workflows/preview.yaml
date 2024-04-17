@@ -1,29 +1,60 @@
 name: Vercel Preview Deployment
 
-env:
-    VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-    VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-
 on:
-    push:
-        branches-ignore:
-            - main
+  push:
+    branches-ignore:
+      - main
+
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
 jobs:
-    Deploy-Preview:
-        runs-on: ubuntu-latest
-        steps:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
 
-            - uses: actions/checkout@v3
+      # Setup Node.js environment
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20' # Match this with your development environment's Node version
 
-            - name: Install Vercel CLI
-              run: npm install --global vercel
+      # Install dependencies
+      - name: Install Dependencies
+        run: npm install
 
-            - name: Pull Vercel Environment Information
-              run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+      # Run tests
+      - name: Run Tests
+        run: npm test
+        env:
+          MONGO_URI_TEST: ${{ secrets.MONGO_URI_TEST }}
 
-            - name: Build Project Artifacts
-              run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+  deploy:
+    needs: test # This job runs only if the 'test' job completes successfully
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
 
-            - name: Deploy Project Artifacts
-              run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
+      # Setup Node.js environment again for this job
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      # Install Vercel CLI
+      - name: Install Vercel CLI
+        run: npm install --global vercel
+
+      # Pull Vercel Environment Information
+      - name: Pull Vercel Environment Information
+        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+
+      # Build Project Artifacts
+      - name: Build Project Artifacts
+        run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+
+      # Deploy Project Artifacts
+      - name: Deploy Project Artifacts
+        run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
