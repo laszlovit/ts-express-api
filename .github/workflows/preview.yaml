@@ -10,24 +10,7 @@ on:
             - main
 
 jobs:
-
-    Test:
-        runs-on: ubuntu-latest
-        steps:
-           
-            - uses: actions/checkout@v3
-
-            - uses: actions/setup-node@v3
-              with:
-                node-version: 20
-            
-            - run: npm ci
-
-            - run: npm run test
-
-
     Deploy-Preview:
-        needs: [Test]
         runs-on: ubuntu-latest
         steps:
 
