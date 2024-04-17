@@ -2,7 +2,7 @@ import { MongoClient } from 'mongodb';
 
 require('dotenv').config();
 
-// Choose the MongoDB URI based on the environment
+// Load the correct db uri
 const MONGO_URI = process.env.NODE_ENV === 'test' 
   ? process.env.MONGO_URI_TEST  // Use test database URI when in test mode
   : process.env.MONGO_URI;      // Use production database URI otherwise
