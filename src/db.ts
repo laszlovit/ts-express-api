@@ -2,12 +2,9 @@ import { MongoClient } from 'mongodb';
 
 require('dotenv').config();
 
-// Choose the MongoDB URI based on the environment
-const MONGO_URI = process.env.NODE_ENV === 'test' 
-  ? process.env.MONGO_URI_TEST  // Use test database URI when in test mode
-  : process.env.MONGO_URI;      // Use production database URI otherwise
+// Ensure the environment variable is loaded
+const MONGO_URI = process.env.MONGO_URI;
 
-// Throw error
 if (!MONGO_URI) {
   throw new Error(
     'MongoDB connection URI is missing in the environment variables');
