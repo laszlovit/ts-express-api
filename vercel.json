@@ -1,11 +1,1 @@
-{
-  "rewrites": [{ "source": "/(.*)", "destination": "/api" }],
-  "git": {
-    "deploymentEnabled": {
-      "main": false,
-      "preview": false
-    }
-  }
-}
-
-
+{ "rewrites": [{ "source": "/(.*)", "destination": "/api" }] }
