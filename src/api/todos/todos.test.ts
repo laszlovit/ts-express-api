@@ -2,15 +2,27 @@ import request from 'supertest';
 
 import app from '../../app';
 import { Todos } from './todos.model';
+import { exchangeCustomToken } from '../../firebaseAuthUtils';
 
-
-const authToken = process.env.FIREBASE_AUTH_TOKEN;
-
+let authToken: string;
 
 beforeAll(async () => {
   try {
     await Todos.drop();
-  } catch (error) {}
+
+    // Obtain ID token using custom token
+    const customToken = process.env.FIREBASE_WEB_API_KEY;
+    if (customToken) {
+      const { idToken } = await exchangeCustomToken(customToken);
+
+      // Set the obtained ID token as the auth token for testing
+      authToken = idToken;
+    } else {
+      throw new Error('Firebase custom token is not defined.');
+    }
+  } catch (error) {
+    console.error('Error setting up tests:', error);
+  }
 });
 
 describe('GET /api/v1/todos', () => {

@@ -32,6 +32,7 @@ jobs:
           MONGO_URI_TEST: ${{ secrets.MONGO_URI_TEST }}
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
           FIREBASE_AUTH_TOKEN: ${{ secrets.FIREBASE_AUTH_TOKEN }}
+          FIREBASE_WEB_API_KEY: ${{ secrets.FIREBASE_WEB_API_KEY }}
 
   deploy:
     needs: test # This job runs only if the 'test' job completes successfully
