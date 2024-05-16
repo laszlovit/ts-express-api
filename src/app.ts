@@ -24,7 +24,8 @@ app.get<{}, MessageResponse>('/', (req, res) => {
   });
 });
 
-const CSS_URL = 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css';
+const CSS_URL =
+  'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.3.0/swagger-ui.min.css';
 
 // Pass customCssUrl option with the CDN URL
 const swaggerUiOptions = {
