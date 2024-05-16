@@ -1,8 +1,45 @@
 import { NextFunction, Request, Response } from 'express';
 import { ZodError } from 'zod';
+import admin from './firebaseAdmin';
+
+require('dotenv').config();
 
 import ErrorResponse from './interfaces/ErrorResponse';
 import RequestValidators from './interfaces/RequestValidators';
+
+export async function verifyToken(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  const token = req.header('Authorization')?.replace('Bearer ', '');
+
+  if (!token) {
+    return res.status(401).json({ message: 'Unauthorized - Missing token' });
+  }
+
+  try {
+    const decodedToken = await admin.auth().verifyIdToken(token);
+    req.user = { uid: decodedToken.uid, email: decodedToken.email }; // Add any other user properties you need
+    next();
+  } catch (error: any) {
+    console.error('Invalid token:', error.message); 
+    return res.status(401).json({ message: 'Unauthorized - Invalid token' });
+  }
+}
+
+
+interface UserPayload {
+  uid: string;
+  email?: string; // Make email optional
+}
+
+
+declare module 'express' {
+  interface Request {
+    user?: UserPayload;
+  }
+}
 
 export function validateRequest(validators: RequestValidators) {
   return async (req: Request, res: Response, next: NextFunction) => {

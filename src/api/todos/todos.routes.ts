@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { ParamsWithId } from '../../interfaces/ParamsWithId';
 
-import { validateRequest } from '../../middlewares';
+import { validateRequest, verifyToken } from '../../middlewares';
 import * as TodoHandlers from './todos.handlers';
 import { Todo } from './todos.model';
 
@@ -17,6 +17,7 @@ router.get(
 );
 router.post(
   '/',
+  verifyToken,
   validateRequest({
     body: Todo,
   }),
@@ -24,6 +25,7 @@ router.post(
 );
 router.put(
   '/:id',
+  verifyToken,
   validateRequest({
     params: ParamsWithId,
     body: Todo,
@@ -32,6 +34,7 @@ router.put(
 );
 router.delete(
   '/:id',
+  verifyToken,
   validateRequest({
     params: ParamsWithId,
   }),
