@@ -30,7 +30,6 @@ export async function verifyToken(
 interface UserPayload {
   uid: string;
   email?: string; // Make email optional
-  // Add other user properties if needed
 }
 
 // Extend Express Request interface to include user property
