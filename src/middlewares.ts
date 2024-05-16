@@ -2,6 +2,8 @@ import { NextFunction, Request, Response } from 'express';
 import { ZodError } from 'zod';
 import admin from './firebaseAdmin';
 
+require('dotenv').config();
+
 import ErrorResponse from './interfaces/ErrorResponse';
 import RequestValidators from './interfaces/RequestValidators';
 
