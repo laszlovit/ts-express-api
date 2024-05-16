@@ -27,17 +27,10 @@ app.get<{}, MessageResponse>('/', (req, res) => {
 const swaggerUi = require('swagger-ui-express');
 const yaml = require('yamljs');
 
-// Custom JavaScript URLs
-const customJsUrls = [
-  'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.3/swagger-ui-bundle.min.js',
-  'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.3/swagger-ui-standalone-preset.min.js',
-];
 
 // Custom CSS URLs
-const customCssUrls = [
+const customCssUrl = [
   'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.3/swagger-ui.min.css',
-  'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.3/swagger-ui-standalone-preset.min.css',
-  'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.3/swagger-ui.css',
 ];
 
 
@@ -45,8 +38,9 @@ const swaggerDefinition = yaml.load(path.resolve(__dirname, './swagger.yaml'));
 
 // Pass customJs and customCssUrl options with the CDN URLs
 const swaggerUiOptions = {
-  customJs: customJsUrls,
-  customCssUrl: customCssUrls,
+  customCss:
+    '.swagger-ui .opblock .opblock-summary-path-description-wrapper { align-items: center; display: flex; flex-wrap: wrap; gap: 0 10px; padding: 0 10px; width: 100%; }',
+  customCssUrl: customCssUrl,
 };
 
 app.use(
