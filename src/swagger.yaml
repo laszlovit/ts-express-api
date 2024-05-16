@@ -1,0 +1,135 @@
+openapi: 3.1.0
+info:
+  title: MEN REST API
+  description: MongoDB ExpressJS NodeJS REST API
+  version: 1.0.0
+servers:
+  - url: http://localhost:4000/api/v1/
+    description: Localhost development server 
+  - url: https://ts-express-api-one.vercel.app/api/v1/
+    description: Vercel remote server
+components:
+  securitySchemes:
+    BearerAuth:    # Arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Todo:
+      type: object
+      properties:
+        _id:
+          type: string
+        content:
+          type: string
+        done:
+          type: boolean
+
+paths:
+
+  /todos:
+    get:
+      summary: Retrieves a list of Todos
+      description: Retrieves a list of todos as JSON objects.
+      responses:
+        200:
+          description: A list of todo JSON objects in an array.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Todo"
+    
+    post:
+      summary: Create a new Todo
+      description: Create a new Todo
+      security:
+        - ApiKeyAuth: []      
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Todo"
+
+      responses:
+        201:
+          description: Todo created succesfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Todo"
+  
+  /todos/{id}:
+    get:
+      summary: Specific Todo
+      description: Retrieves a specific Todo based on it id.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id
+          schema:
+            type: string
+      responses:
+        200:
+          description: A Todo in the format of a JSON object.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Todo"
+   
+    put:
+      summary: Updates a specific Todo
+      description: Updates a specific Todo based on it id
+      security:
+        - ApiKeyAuth: []            
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Todo"
+
+      responses:
+        201:
+          description: Todo updated succesfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Todo"
+
+    delete:
+      summary: Deletes a specific Todo
+      description: Deletes a specific Todo based on it id
+      security:
+        - ApiKeyAuth: []            
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id
+          schema:
+            type: string      
+
+      responses:
+        201:
+          description: Todo deleted succesfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Todo"
+
+  
+
