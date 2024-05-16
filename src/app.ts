@@ -25,7 +25,7 @@ app.get<{}, MessageResponse>('/', (req, res) => {
 const swaggerUi = require('swagger-ui-express');
 const yaml = require('yamljs');
 
-const swaggerDefinition = yaml.load('src/swagger.yaml');
+const swaggerDefinition = yaml.load('swagger.yaml');
 app.use('/api/v1/docs', swaggerUi.serve, swaggerUi.setup(swaggerDefinition));
 
 app.use('/api/v1', api);
