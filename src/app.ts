@@ -24,11 +24,22 @@ app.get<{}, MessageResponse>('/', (req, res) => {
   });
 });
 
+const CSS_URL = 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css';
+
+// Pass customCssUrl option with the CDN URL
+const swaggerUiOptions = {
+  customCssUrl: CSS_URL,
+};  
+
 const swaggerUi = require('swagger-ui-express');
 const yaml = require('yamljs');
 
 const swaggerDefinition = yaml.load(path.resolve(__dirname, './swagger.yaml'));
-app.use('/api/v1/docs', swaggerUi.serve, swaggerUi.setup(swaggerDefinition));
+app.use(
+  '/api/v1/docs',
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerDefinition, swaggerUiOptions),
+);
 
 app.use('/api/v1', api);
 
