@@ -30,7 +30,7 @@ const yaml = require('yamljs');
 
 // Custom CSS URLs
 const customCssUrl = [
-  'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.3/swagger-ui.min.css',
+  'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.3.0/swagger-ui.min.css',
 ];
 
 
