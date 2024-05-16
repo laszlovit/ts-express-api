@@ -3,6 +3,19 @@ import request from 'supertest';
 import app from '../../app';
 import { Todos } from './todos.model';
 
+import {
+  generateMockFirebaseToken,
+  MockFirebaseToken,
+} from '../../mockFirebaseToken';
+
+const mockUser: MockFirebaseToken = {
+  uid: 'mock-uid',
+  email: 'mock@example.com',
+  // Add other fields as needed
+};
+
+const mockToken = generateMockFirebaseToken(mockUser);
+
 beforeAll(async () => {
   try {
     await Todos.drop();
@@ -28,6 +41,7 @@ describe('POST /api/v1/todos', () => {
   it('responds with an error if the todo is invalid', async () =>
     request(app)
       .post('/api/v1/todos')
+      .set('Authorization', `Bearer ${mockToken}`)
       .set('Accept', 'application/json')
       .send({
         content: '',
@@ -36,11 +50,11 @@ describe('POST /api/v1/todos', () => {
       .expect(422)
       .then((response) => {
         expect(response.body).toHaveProperty('message');
-      }),
-  );
+      }));
   it('responds with an inserted object', async () =>
     request(app)
       .post('/api/v1/todos')
+      .set('Authorization', `Bearer ${mockToken}`)
       .set('Accept', 'application/json')
       .send({
         content: 'Learn TypeScript',
@@ -54,8 +68,7 @@ describe('POST /api/v1/todos', () => {
         expect(response.body).toHaveProperty('content');
         expect(response.body.content).toBe('Learn TypeScript');
         expect(response.body).toHaveProperty('done');
-      }),
-  );
+      }));
 });
 
 describe('GET /api/v1/todos/:id', () => {
@@ -93,6 +106,7 @@ describe('PUT /api/v1/todos/:id', () => {
   it('responds with an invalid ObjectId error', (done) => {
     request(app)
       .put('/api/v1/todos/adsfadsfasdfasdf')
+      .set('Authorization', `Bearer ${mockToken}`)
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(422, done);
@@ -100,6 +114,7 @@ describe('PUT /api/v1/todos/:id', () => {
   it('responds with a not found error', (done) => {
     request(app)
       .put('/api/v1/todos/6306d061477bdb46f9c57fa4')
+      .set('Authorization', `Bearer ${mockToken}`)
       .set('Accept', 'application/json')
       .send({
         content: 'Learn TypeScript',
@@ -111,6 +126,7 @@ describe('PUT /api/v1/todos/:id', () => {
   it('responds with a single todo', async () =>
     request(app)
       .put(`/api/v1/todos/${id}`)
+      .set('Authorization', `Bearer ${mockToken}`)
       .set('Accept', 'application/json')
       .send({
         content: 'Learn TypeScript',
@@ -124,14 +140,14 @@ describe('PUT /api/v1/todos/:id', () => {
         expect(response.body).toHaveProperty('content');
         expect(response.body).toHaveProperty('done');
         expect(response.body.done).toBe(true);
-      }),
-  );
+      }));
 });
 
 describe('DELETE /api/v1/todos/:id', () => {
   it('responds with an invalid ObjectId error', (done) => {
     request(app)
       .delete('/api/v1/todos/adsfadsfasdfasdf')
+      .set('Authorization', `Bearer ${mockToken}`)
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(422, done);
@@ -139,6 +155,7 @@ describe('DELETE /api/v1/todos/:id', () => {
   it('responds with a not found error', (done) => {
     request(app)
       .delete('/api/v1/todos/6306d061477bdb46f9c57fa4')
+      .set('Authorization', `Bearer ${mockToken}`)
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(404, done);
@@ -146,6 +163,7 @@ describe('DELETE /api/v1/todos/:id', () => {
   it('responds with a 204 status code', (done) => {
     request(app)
       .delete(`/api/v1/todos/${id}`)
+      .set('Authorization', `Bearer ${mockToken}`)
       .expect(204, done);
   });
   it('responds with a not found error', (done) => {
