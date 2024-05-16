@@ -24,23 +24,37 @@ app.get<{}, MessageResponse>('/', (req, res) => {
   });
 });
 
-const CSS_URL =
-  'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.3.0/swagger-ui.min.css';
-
-// Pass customCssUrl option with the CDN URL
-const swaggerUiOptions = {
-  customCssUrl: CSS_URL,
-};  
-
 const swaggerUi = require('swagger-ui-express');
 const yaml = require('yamljs');
 
+// Custom JavaScript URLs
+const customJsUrls = [
+  'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.3/swagger-ui-bundle.min.js',
+  'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.3/swagger-ui-standalone-preset.min.js',
+];
+
+// Custom CSS URLs
+const customCssUrls = [
+  'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.3/swagger-ui.min.css',
+  'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.3/swagger-ui-standalone-preset.min.css',
+  'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.3/swagger-ui.css',
+];
+
+
 const swaggerDefinition = yaml.load(path.resolve(__dirname, './swagger.yaml'));
+
+// Pass customJs and customCssUrl options with the CDN URLs
+const swaggerUiOptions = {
+  customJs: customJsUrls,
+  customCssUrl: customCssUrls,
+};
+
 app.use(
   '/api/v1/docs',
   swaggerUi.serve,
   swaggerUi.setup(swaggerDefinition, swaggerUiOptions),
 );
+
 
 app.use('/api/v1', api);
 
