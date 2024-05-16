@@ -28,13 +28,13 @@ export async function verifyToken(
   }
 }
 
-// Interface for user payload in JWT token
+
 interface UserPayload {
   uid: string;
   email?: string; // Make email optional
 }
 
-// Extend Express Request interface to include user property
+
 declare module 'express' {
   interface Request {
     user?: UserPayload;
