@@ -1,5 +1,7 @@
 import * as admin from 'firebase-admin';
 
+require('dotenv').config();
+
 const serviceAccountEnv = process.env.FIREBASE_SERVICE_ACCOUNT;
 
 if (!serviceAccountEnv) {
