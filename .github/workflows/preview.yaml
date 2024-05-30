@@ -25,10 +25,15 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      # Run tests
-      - name: Run Tests
-        run: npm test
+        # Install Firebase Emulator Suite
+      - name: Install Firebase Emulator Suite
+        run: npm install -g firebase-tools
+
+        # Run tests with Firebase Emulator Suite
+      - name: Run Tests with Firebase Emulator Suite
+        run: firebase emulators:exec --project todo-app-vue-3 'npm test'
         env:
+          GCLOUD_PROJECT: todo-app-vue-3
           MONGO_URI_TEST: ${{ secrets.MONGO_URI_TEST }}
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
 

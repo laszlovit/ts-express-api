@@ -10,7 +10,7 @@ import RequestValidators from './interfaces/RequestValidators';
 export async function verifyToken(
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) {
   const token = req.header('Authorization')?.replace('Bearer ', '');
 
@@ -23,17 +23,15 @@ export async function verifyToken(
     req.user = { uid: decodedToken.uid, email: decodedToken.email }; // Add any other user properties you need
     next();
   } catch (error: any) {
-    console.error('Invalid token:', error.message); 
+    console.error('Invalid token:', error.message);
     return res.status(401).json({ message: 'Unauthorized - Invalid token' });
   }
 }
-
 
 interface UserPayload {
   uid: string;
   email?: string; // Make email optional
 }
-
 
 declare module 'express' {
   interface Request {
@@ -70,7 +68,12 @@ export function notFound(req: Request, res: Response, next: NextFunction) {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function errorHandler(err: Error, req: Request, res: Response<ErrorResponse>, next: NextFunction) {
+export function errorHandler(
+  err: Error,
+  req: Request,
+  res: Response<ErrorResponse>,
+  next: NextFunction
+) {
   const statusCode = res.statusCode !== 200 ? res.statusCode : 500;
   res.status(statusCode);
   res.json({

@@ -2,6 +2,9 @@
 module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
-  setupFilesAfterEnv: ['<rootDir>/src/setupFilesAfterEnv.ts'],
+  setupFilesAfterEnv: [
+    '<rootDir>/src/setupFilesAfterEnv.ts',
+    '<rootDir>/src/setupFirebase.ts',
+  ],
   modulePathIgnorePatterns: ['<rootDir>/dist/'],
 };
