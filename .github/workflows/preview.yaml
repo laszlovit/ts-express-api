@@ -35,6 +35,7 @@ jobs:
         env:
           GCLOUD_PROJECT: todo-app-vue-3
           MONGO_URI_TEST: ${{ secrets.MONGO_URI_TEST }}
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
 
   deploy:
     needs: test # This job runs only if the 'test' job completes successfully
